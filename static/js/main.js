@@ -17,7 +17,7 @@ function btnClick(e){
     alert(e.target.id);
 }
 
-var UserTag = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 
+var UserTag = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0];
 // Change according to user click and unclick
 
 
@@ -40,6 +40,6 @@ function sendUserTag(){
 }
  
 
-document.addEventListener('keypress', function(){
-    sendUserTag([0,0,0,0]);
-})
+// document.addEventListener('keypress', function(){
+//     sendUserTag();
+// })
