@@ -5,7 +5,7 @@ from algo import *
 app = Flask(__name__)
 
 app.secret_key = "harish"
-
+Data = []
 MovieMap = {}
 f = open("data.csv","r",encoding='utf-8')
 reader = csv.reader(f)
@@ -20,7 +20,6 @@ for row in reader:
     except:
         continue
 
-print("sdfsdsgf")
 genres = ['Action', 'Adventure', 'Animation', 'Biography', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Family',
             'Fantasy', 'Film-Noir', 'Game-Show', 'History', 'Horror', 'Music', 'Musical', 'Mystery', 'News',
             'Reality-TV', 'Romance', 'Sci-Fi', 'Short', 'Sport', 'Thriller', 'War', 'Western']
@@ -31,6 +30,7 @@ for i in L:
     temp = [1 if j in t1 else 0 for j in genres ]
     L1.append([temp,i[1],i[2],ind])
     MovieMap[ind] = [temp,i[1],i[2],ind]
+    Data.append([i[1],ind])
     ind+=1
 
 
@@ -44,7 +44,7 @@ def home():
     
     dim = 26
     if session.get("user") is None:
-        session["user"] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+        session["user"] = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0]
     points = L1
     kd_tree = KDTree(points, dim)
     data = []
@@ -70,9 +70,20 @@ def addWatched():
 
 @app.route("/search", methods = ['GET','POST'])
 def search():
+    
     search  = request.form.get("search")
-    movies = [[search,'2','3','4']]
+    #dummy
+    movies = [[search,'2','Imdb','4']]
     return render_template('home.html',data = movies)
+
+@app.route("/tag")
+def tag():
+    return render_template("tag.html")
+
+@app.route("/userTag", methods = ["GET","POST"])
+def userTag():
+
+    return jsonify({"data" : ["this data", "s23"]})
 
 if __name__ == "__main__":
     app.run(debug = True)
