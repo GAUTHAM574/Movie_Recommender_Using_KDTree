@@ -1,0 +1,11 @@
+
+
+
+.subbtn{
+    margin-left: 1rem;
+}
+
+form{
+    display: flex;
+    justify-content: space-evenly;
+}
