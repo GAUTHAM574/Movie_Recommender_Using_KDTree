@@ -8,13 +8,21 @@ for(let i of document.querySelectorAll(".watchbtn")){
             data: {id : id},
             type: 'POST'
         }).done(function(data){
-            console.log('success');
+            alert('Watched');
         });
     })
 }
 
 function btnClick(e){
-    alert(e.target.id);
+    let id = e.target.id;
+    console.log(id);
+    $.ajax({
+        url : '/addWatched',
+        data: {id : id},
+        type: 'POST'
+    }).done(function(data){
+        alert("Watched");
+    });
 }
 
 var UserTag = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -68,7 +76,7 @@ function sendUserTag(){
     }).done(function(data){
         let inner = "";
         for(i of data["data"]){
-            inner += '<div class="col"><div class="card shadow-sm"><svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg><div class="card-body"><p class="card-text">'+ i[0] + '</p><div class="d-flex justify-content-between align-items-center"><div class="btn-group"><button type="button" id="Loading" class="btn btn-md btn-outline-secondary watchbtn" onclick = "btnClick(event)">Watch</button></div><small class="text-body-secondary">IMDB :  ' + i[2] + '</small></div></div></div></div>';
+            inner += '<div class="col"><div class="card shadow-sm"><svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg><div class="card-body"><p class="card-text">'+ i[0] + '</p><div class="d-flex justify-content-between align-items-center"><div class="btn-group"><button type="button" id="' + i[3] + '" class="btn btn-md btn-outline-secondary watchbtn" onclick = "btnClick(event)">Watch</button></div><small class="text-body-secondary">IMDB :  ' + i[2] + '</small></div></div></div></div>';
         }
         $('.row').empty(); //edited
         $('.row').append(inner);

@@ -34,6 +34,8 @@ for i in L:
     ind+=1
 dim = 26
 points = L1
+
+
 kd_tree = KDTree(points, dim)
 
 def getMovie(id):
@@ -45,23 +47,22 @@ def home():
     
     if session.get("user") is None:
         session["user"] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    
     data = []
     for i in sorted(kd_tree.get_knn(session['user'],15),key = lambda x : float(x[1][2]) - x[0]*10, reverse=True):
         data.append([i[1][1], i[0],i[1][2],i[1][3]])
         print(i[1][1],i[0])
-    
     return render_template("home.html", data = data)
 
 
 @app.route('/addWatched', methods = ["GET","POST"])
 def addWatched():
     t = request.form['id']
+
     t2 = getMovie(int(t))
     t3 = session.get("user")
-    for i in range(len(t2)):
+  
+    for i in range(len(t2[0])):
         t2[0][i] = (t2[0][i] + t3[i])/2
-
     session["user"] = t2[0]
     print(session["user"])
     return jsonify({'data' : 'asdsf'})
@@ -74,8 +75,8 @@ def search():
     #dummy
     movies = []
     for i in L1:
-        if search.lower() in i[1].lower():
-            movies.append([i[1],i[0],i[2]])
+        if search.lower() in i[1].lower().split():        
+            movies.append([i[1],i[0],i[2],i[3]])
     return render_template('home.html',data = movies)
 
 @app.route("/tag")
@@ -85,20 +86,17 @@ def tag():
 @app.route("/userTag", methods = ["GET","POST"])
 def userTag():
     global kd_tree
-    print(request.form)
     userTag = request.form.getlist("tag[]")
-    session["user"] = userTag
+    # session["user"] = userTag
     # print(userTag)
     for i in range(len(userTag)):
         userTag[i] = float(userTag[i])
-    print(userTag)
     data = []
-    for i in sorted(kd_tree.get_knn(userTag,15),key = lambda x : float(x[1][2]) - float(x[0]*10), reverse=True):
+    for i in sorted(kd_tree.get_knn(userTag,30),key = lambda x : float(x[1][2]) - float(x[0]*10), reverse=True):
         data.append([i[1][1], i[0],i[1][2],i[1][3]])
         print(i[1][1],i[0])
     return jsonify({"data" : data})
 
-    return jsonify({"data" : "dummy"})
 
 if __name__ == "__main__":
     app.run(debug = True)
