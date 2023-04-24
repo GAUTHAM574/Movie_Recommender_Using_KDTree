@@ -92,7 +92,7 @@ def userTag():
     for i in range(len(userTag)):
         userTag[i] = float(userTag[i])
     data = []
-    for i in sorted(kd_tree.get_knn(userTag,15),key = lambda x : float(x[1][2]) - float(x[0]*10), reverse=True):
+    for i in sorted(kd_tree.get_knn(userTag,30),key = lambda x : float(x[1][2]) - float(x[0]*10), reverse=True):
         data.append([i[1][1], i[0],i[1][2],i[1][3]])
         print(i[1][1],i[0])
     return jsonify({"data" : data})
